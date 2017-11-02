@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.40.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.40.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        h2, h3 {
+            margin: 10px;
+            font-size: 1.2em;
+        }
+        h3 {
+            font-size: 1em;
+        }
+        p {
+            font-size: 0.85em;
+            margin: 10px;
+            text-align: left;
+        }
+        .map-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.8);
+            margin-right: 20px;
+            font-family: Arial, sans-serif;
+            overflow: auto;
+            border-radius: 3px;
+        }
+        #map {
+            position:absolute;
+            top:0;
+            bottom:0;
+            width:100%;
+        }
+        #features {
+            top: 0;
+            height: 75px;
+            margin-top: 20px;
+            width: 250px;
+        }
+        #legend {
+            padding: 10px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+            line-height: 18px;
+            height: 190px;
+            margin-bottom: 40px;
+            width: 200px;
+        }
+        .legend-key {
+            display:inline-block;
+            border-radius: 20%;
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<div class='map-overlay' id='features'><h2>ADN Urbano</h2><div id='pd'><p>Argentina 2010</p></div></div>
+<div class='map-overlay' id='legend'><strong><h3>Tipología</h3></strong></div>
+
+<script>
+
+// define access token
+mapboxgl.accessToken = 'pk.eyJ1IjoiY2lwcGVjIiwiYSI6ImNqN3Y2OWQwZjAydzEzM28wM3dpNnN5angifQ.IBt5F-gIOP5sZku2L5afcA';
+
+//create map
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/cippec/cj7lym3xp8s252sqsqn1rjzce', // map style URL from Mapbox Studio
+    minZoom: 6
+});
+
+// wait for map to load before adjusting it
+map.on('load', function() {
+
+    // make a pointer cursor
+    map.getCanvas().style.cursor = 'default';
+
+    // set map bounds to the AGBA
+    map.fitBounds([[-58.736723, -34.426136], [-58.155399, -34.880278]]);
+
+    // define layer names
+    var layers = ['Urbanizada', 'Urbanizada deprimida', 'Suburbanizada', 'Suburbanizada deprimida', 'Preurbanizada saturada', 'Preurbanizada', 'Vulnerable', 'Crítica'];
+    var colors = ['#00FFFF', '#0000FF', '#C0C0C0', '#FF00FF', '#00FF00', '#FFFF00', '#FF0000', '#000000'];
+
+    // create legend
+    for (i=0; i<layers.length; i++) {
+        var layer = layers[i];
+        var color = colors[i];
+        var item = document.createElement('div');
+        var key = document.createElement('span');
+        key.className = 'legend-key';
+        key.style.backgroundColor = color;
+
+        var value = document.createElement('span');
+        value.innerHTML = layer;
+        item.appendChild(key);
+        item.appendChild(value);
+        legend.appendChild(item);
+    }
+
+
+});
+
+</script>
+
+</body>
+</html>
